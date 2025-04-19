@@ -40,41 +40,33 @@ export default {
   },
 
   actions: {
-    async initializeContacts({ commit, rootGetters }) {
-      const client = rootGetters['auth/client']
-      if (!client) return
+    async initializeContacts({ commit, rootGetters }, { client, addressBook }) {
+      if (!client || !addressBook) return
 
       try {
-        // Fetch address books
-        const addressBooks = await client.fetchAddressBooks()
-        commit('SET_ADDRESSBOOKS', addressBooks)
-
-        if (addressBooks.length > 0) {
-          const defaultAddressBook = addressBooks[0]
-          commit('SET_SELECTED_ADDRESSBOOK', defaultAddressBook)
-
-          // Fetch vCards from the default address book
-          const vCards = await client.fetchVCards({ addressBook: defaultAddressBook })
+        commit('SET_SELECTED_ADDRESSBOOK', addressBook)
+        
+        // Fetch vCards from the specified address book
+        const vCards = await client.fetchVCards({ addressBook })
+        
+        // Parse vCards into contacts
+        const contacts = vCards.map(vCard => {
+          const jCard = ICAL.parse(vCard.data)
+          const vCardObj = new ICAL.Component(jCard)
           
-          // Parse vCards into contacts
-          const contacts = vCards.map(vCard => {
-            const jCard = ICAL.parse(vCard.data)
-            const vCardObj = new ICAL.Component(jCard)
-            
-            return {
-              uid: vCardObj.getFirstPropertyValue('uid') || uuid(),
-              addressBookUrl: defaultAddressBook.url,
-              etag: vCard.etag,
-              data: vCard.data,
-              displayName: vCardObj.getFirstPropertyValue('fn'),
-              email: vCardObj.getFirstPropertyValue('email'),
-              tel: vCardObj.getFirstPropertyValue('tel'),
-              raw: vCardObj
-            }
-          })
+          return {
+            uid: vCardObj.getFirstPropertyValue('uid') || uuid(),
+            addressBookUrl: addressBook.url,
+            etag: vCard.etag,
+            data: vCard.data,
+            displayName: vCardObj.getFirstPropertyValue('fn'),
+            email: vCardObj.getFirstPropertyValue('email'),
+            tel: vCardObj.getFirstPropertyValue('tel'),
+            raw: vCardObj
+          }
+        })
 
-          commit('SET_CONTACTS', contacts)
-        }
+        commit('SET_CONTACTS', contacts)
       } catch (error) {
         console.error('Failed to initialize contacts:', error)
         throw error

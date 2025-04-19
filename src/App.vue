@@ -54,8 +54,8 @@ export default {
     const store = useStore()
     const showLogin = ref(false)
     const loginForm = ref({
-      username: '',
-      password: '',
+      username: process.env.VUE_APP_DEFAULT_USERNAME || '',
+      password: process.env.VUE_APP_DEFAULT_PASSWORD || '',
       server: process.env.VUE_APP_RADICALE_URL || ''
     })
 

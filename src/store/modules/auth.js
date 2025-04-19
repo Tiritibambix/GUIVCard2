@@ -39,16 +39,27 @@ export default {
         })
 
         // Test connection by fetching addressbooks
-        await client.fetchAddressBooks()
+        const addressBooks = await client.fetchAddressBooks()
+        
+        // Find specific addressbook using env variable
+        const addressBookPath = process.env.VUE_APP_RADICALE_PATH || ''
+        const targetAddressBook = addressBookPath ?
+          addressBooks.find(ab => ab.url.endsWith(addressBookPath)) :
+          addressBooks[0]
+
+        if (!targetAddressBook) {
+          throw new Error('AddressBook not found')
+        }
 
         commit('SET_AUTH', {
           username,
           client,
-          serverUrl: server
+          serverUrl: server,
+          addressBook: targetAddressBook
         })
 
-        // Initialize contacts after successful login
-        await this.dispatch('contacts/initializeContacts', client)
+        // Initialize contacts after successful login with specific addressbook
+        await this.dispatch('contacts/initializeContacts', { client, addressBook: targetAddressBook })
 
         return true
       } catch (error) {
