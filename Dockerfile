@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN apk add --no-cache wget
 RUN npm install -g serve
-RUN npm install --production
+RUN npm install
 
 # Copy source
 COPY . .
