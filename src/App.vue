@@ -1,24 +1,23 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <router-link class="navbar-brand" to="/">GUIVCard2</router-link>
-        <div class="collapse navbar-collapse">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/contacts">Contacts</router-link>
-            </li>
-          </ul>
-          <div class="d-flex" v-if="!isAuthenticated">
-            <button class="btn btn-outline-light" @click="showLoginModal">Login</button>
-          </div>
-          <div class="d-flex" v-else>
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar-brand to="/">GUIVCard2</b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <router-link class="nav-link" to="/contacts">Contacts</router-link>
+        </b-navbar-nav>
+        <b-navbar-nav class="ms-auto">
+          <template v-if="!isAuthenticated">
+            <b-button variant="outline-light" @click="showLoginModal">Login</b-button>
+          </template>
+          <template v-else>
             <span class="navbar-text me-3">{{ username }}</span>
-            <button class="btn btn-outline-light" @click="logout">Logout</button>
-          </div>
-        </div>
-      </div>
-    </nav>
+            <b-button variant="outline-light" @click="logout">Logout</b-button>
+          </template>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
     <div class="container mt-4">
       <router-view></router-view>
@@ -26,20 +25,17 @@
 
     <!-- Login Modal -->
     <b-modal v-model="showLogin" title="Login to Radicale" @ok="login">
-      <form @submit.prevent="login">
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" v-model="loginForm.username">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" v-model="loginForm.password">
-        </div>
-        <div class="mb-3">
-          <label for="server" class="form-label">Server URL</label>
-          <input type="text" class="form-control" id="server" v-model="loginForm.server">
-        </div>
-      </form>
+      <b-form @submit.prevent="login">
+        <b-form-group label="Username" label-for="username">
+          <b-form-input id="username" v-model="loginForm.username" required></b-form-input>
+        </b-form-group>
+        <b-form-group label="Password" label-for="password">
+          <b-form-input id="password" type="password" v-model="loginForm.password" required></b-form-input>
+        </b-form-group>
+        <b-form-group label="Server URL" label-for="server">
+          <b-form-input id="server" v-model="loginForm.server" required></b-form-input>
+        </b-form-group>
+      </b-form>
     </b-modal>
   </div>
 </template>
