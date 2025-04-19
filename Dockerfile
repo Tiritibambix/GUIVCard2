@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
+RUN npm install -g serve
 RUN npm install
 
 # Copy source
@@ -15,5 +16,5 @@ RUN npm run build
 # Expose port
 EXPOSE 8080
 
-# Start the app
-CMD ["npm", "run", "serve"]
+# Start the app in production mode
+CMD ["serve", "-s", "dist"]

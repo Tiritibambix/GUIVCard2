@@ -1,6 +1,7 @@
 {
   "name": "guivcard2",
   "version": "1.0.0",
+  "license": "GPL-3.0",
   "description": "A Vue.js CardDAV client for Radicale",
   "private": true,
   "scripts": {
@@ -21,7 +22,8 @@
     "uuid": "^9.0.1",
     "@vueuse/core": "^10.9.0",
     "bootstrap": "^5.3.3",
-    "bootstrap-vue-next": "^0.16.6"
+    "bootstrap-vue-next": "^0.16.6",
+    "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",

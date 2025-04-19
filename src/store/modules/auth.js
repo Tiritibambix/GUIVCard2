@@ -1,4 +1,4 @@
-import { createClient } from 'tsdav'
+import { createDAVClient } from 'tsdav'
 
 export default {
   namespaced: true,
@@ -28,7 +28,7 @@ export default {
   actions: {
     async login({ commit }, { username, password, server }) {
       try {
-        const client = await createClient({
+        const client = await createDAVClient({
           serverUrl: server,
           credentials: {
             username,

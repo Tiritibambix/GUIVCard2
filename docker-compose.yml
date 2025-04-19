@@ -1,13 +1,15 @@
-version: '3'
+version: '3.8'
+
 services:
-  web:
-    build: .
+  guivcard2:
+    image: tiritibambix/guivcard2:latest
+    container_name: guivcard2
     ports:
-      - "8080:8080"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - VUE_APP_RADICALE_URL=https://radicale.domain.com
+      - "8080:80"
     restart: unless-stopped
+    networks:
+      - guivcard_network
+
+networks:
+  guivcard_network:
+    driver: bridge
