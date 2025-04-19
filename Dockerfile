@@ -16,5 +16,7 @@ RUN npm run build
 # Expose port
 EXPOSE 8080
 
-# Start the app in production mode
-CMD ["serve", "-s", "dist"]
+# Start the app in production mode with debugging
+ENV NODE_ENV=production
+ENV DEBUG=*
+CMD ["serve", "-s", "dist", "-v", "--debug"]

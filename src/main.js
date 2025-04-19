@@ -34,4 +34,19 @@ app.use(store)
 app.use(router)
 app.use(createBootstrap())
 
+// Global error handler
+app.config.errorHandler = (err, vm, info) => {
+  console.error('Vue Error:', err)
+  console.error('Component:', vm)
+  console.error('Info:', info)
+}
+
+// Production error handling
+if (process.env.NODE_ENV === 'production') {
+  window.onerror = function(msg, url, line, col, error) {
+    console.error('Global Error:', {msg, url, line, col, error})
+    return false
+  }
+}
+
 app.mount('#app')
