@@ -40,7 +40,7 @@ export default {
   },
 
   actions: {
-    async initializeContacts({ commit, rootGetters }, { client, addressBook }) {
+    async initializeContacts({ commit }, { client, addressBook }) {
       if (!client || !addressBook) return
 
       try {
