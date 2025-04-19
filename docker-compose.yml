@@ -6,7 +6,12 @@ services:
     container_name: guivcard2
     ports:
       - "8080:3000"
-    restart: unless-stopped
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     environment:
       - VUE_APP_RADICALE_URL=https://radicale.domain.com
       - VUE_APP_RADICALE_PATH=/username/contacts
@@ -14,6 +19,11 @@ services:
       - VUE_APP_DEFAULT_PASSWORD=password
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   default:

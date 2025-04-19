@@ -4,8 +4,9 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
+RUN apk add --no-cache wget
 RUN npm install -g serve
-RUN npm install
+RUN npm install --production
 
 # Copy source
 COPY . .
@@ -13,10 +14,12 @@ COPY . .
 # Build for production
 RUN npm run build
 
-# Expose port
-EXPOSE 8080
+# Expose port 3000
+EXPOSE 3000
 
-# Start the app in production mode with debugging
-ENV NODE_ENV=production
-ENV DEBUG=*
-CMD ["serve", "-s", "dist", "-v", "--debug"]
+# Start the app in production mode
+# Add startup script
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
