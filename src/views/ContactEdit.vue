@@ -94,7 +94,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import ICAL from 'ical.js'
 
 const EXCLUDED_PROPERTIES = ['version', 'uid']
 const AVAILABLE_PROPERTIES = [
