@@ -7,9 +7,11 @@ services:
     ports:
       - "8080:3000"
     restart: unless-stopped
+    environment:
+      - VUE_APP_RADICALE_URL=http://localhost:5232
     networks:
-      - guivcard_network
+      - default
 
 networks:
-  guivcard_network:
+  default:
     driver: bridge
