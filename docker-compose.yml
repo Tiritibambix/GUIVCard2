@@ -5,7 +5,7 @@ services:
     image: tiritibambix/guivcard2:latest
     container_name: guivcard2
     ports:
-      - "8080:80"
+      - "8080:3000"
     restart: unless-stopped
     networks:
       - guivcard_network
